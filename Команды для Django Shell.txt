@@ -1,0 +1,106 @@
+1. 
+>>> u1 = User.objects.create(username='Sergay')
+>>> u2 = User.objects.create(username='Alex')
+
+2. 
+>>> authorOne = Author.objects.create(authorUser=u1) 
+>>> authorTwo = Author.objects.create(authorUser=u2) 
+
+3. 
+>>> catOne = Category.objects.create(name='Weather') 
+>>> catTwo = Category.objects.create(name='Sport')   
+>>> catThr = Category.objects.create(name='Science') 
+>>> catFou = Category.objects.create(name='Politics') 
+
+4.
+>>> postOne = Post.objects.create(author=authorOne, categoryType='AR', title='Вечный двигатель', text='Российские ученые наконец') 
+>>> postTwo = Post.objects.create(author=authorTwo, categoryType='AR', title='Погода', text='Переменная облачность ожидается')     
+>>> postThr = Post.objects.create(author=authorTwo, categoryType='NW', title='Собрание глав государств', text='Уже в эту субботу состоится')
+
+5.
+>>> postOne.postCategory.add(catThr)
+>>> postTwo.postCategory.add(catOne, catThr) 
+>>> postThr.postCategory.add(catFou)
+
+6.
+>>> comOne = Comment.objects.create(commentPost=postOne, commentUser=u1, text='Долгое время умы человечества') 
+>>> comTwo = Comment.objects.create(commentPost=postOne, commentUser=u2, text='Кто бы мог подумать')           
+>>> comThr = Comment.objects.create(commentPost=postTwo, commentUser=u1, text='А так хотелось сегодня позагорать') 
+>>> comFou = Comment.objects.create(commentPost=postTwo, commentUser=u2, text='Интересно придут ли они к соглашению на этот раз') 
+
+7.
+>>> comOne.like()
+>>> comOne.like() 
+>>> comOne.like()
+>>> comOne.like()
+>>> comTwo.like() 
+>>> comTwo.like()
+>>> comTwo.like()
+>>> comThr.dislike() 
+>>> comThr.dislike() 
+>>> comThr.dislike()
+>>> comThr.dislike()
+>>> comThr.dislike()
+>>> comFou.like()
+>>> comFou.like()
+>>> comFou.like()  
+>>> comFou.like()
+>>> postOne.like()   
+>>> postOne.like()
+>>> postOne.like()
+>>> postOne.like()   
+>>> postOne.like()
+>>> postTwo.dislike() 
+>>> postTwo.dislike()
+>>> postTwo.dislike()
+>>> postTwo.dislike()
+>>> postTwo.dislike()
+>>> postThr.dislike() 
+>>> postThr.dislike()
+
+8.
+>>> authorOne.update_rating()
+>>> authorTwo.update_rating() 
+
+9.
+>>> authorBest = Author.objects.order_by('-ratingAuthor')[:1] 
+>>> for i in authorBest:
+...     i.ratingAuthor
+...     i.authorUser.username
+... 
+15
+'Sergay'
+
+10.
+>>> PostBast = Post.objects.order_by('-rating')[:1]
+>>> for i in PostBast:
+...     i.dateCreation
+...     i.author.authorUser.username
+...     i.rating
+...     i.title
+...     i.preview()
+... 
+datetime.datetime(2024, 1, 7, 7, 6, 43, 695089, tzinfo=datetime.timezone.utc)
+'Sergay'
+5
+'Вечный двигатель'
+'Российские ученые наконец'
+
+11.
+>>> comBasts = Post.objects.order_by('-rating')[0].comment_set.all() 
+>>> for i in comBasts:
+...     i.dateCreation
+...     i.commentUser.username
+...     i.rating
+...     i.text
+... 
+datetime.datetime(2024, 1, 7, 7, 16, 41, 502582, tzinfo=datetime.timezone.utc)
+'Sergay'
+4
+'Долгое время умы человечества'
+datetime.datetime(2024, 1, 7, 7, 17, 46, 216160, tzinfo=datetime.timezone.utc)
+'Alex'
+3
+'Кто бы мог подумать'
+
+
